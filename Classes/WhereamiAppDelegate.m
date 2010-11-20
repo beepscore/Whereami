@@ -33,7 +33,9 @@
     [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
     
     // Tell our manager to start looking for its location immediately
-    [locationManager startUpdatingLocation];
+    // [locationManager startUpdatingLocation];
+    // [locationManager startUpdatingHeading];
+    [mapView setShowsUserLocation:YES];
     
     [window makeKeyAndVisible];
     return YES;
@@ -61,7 +63,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     /*
-     Called as part of  transition from the background to the inactive state: here you can undo many of the changes made on entering the background.
+     Called as part of transition from the background to the inactive state: here you can undo many of the changes made on entering the background.
      */
 }
 
@@ -96,7 +98,16 @@
 
 - (void)dealloc
 {
+    // In the Cocoa delegate pattern, delegators (e.g. locationManager) have a reference to
+    // their delegate but don't retain it.  Following retain/release conventions, the
+    // delegate could be completely released and deallocated without the delegator's knowledge.
+    // In that case the delegator's reference would be "stale" and bad, and something else
+    // might be stored at the memory location pointed to by the delegate property.
+    // If we are a delegate and are going away, set the delegator's delegate property to nil
+    // so the delegator won't have a bad reference.
+    // In this app it won't matter, because when WhereamiAppDelegate goes away the app is ending.
     [locationManager setDelegate:nil];
+    
     [window release];
     [super dealloc];
 }
@@ -111,10 +122,25 @@
     NSLog(@"%@", newLocation);
 }
 
+- (void)locationManager:(CLLocationManager *)manager 
+       didUpdateHeading:(CLHeading *)newHeading {
+    NSLog(@"%@", newHeading);    
+}
+
+
 - (void)locationManager:(CLLocationManager *)manager
 didFailWithError:(NSError *)error
 {
     NSLog(@"Could not find location: %@", error);
+}
+
+
+#pragma mark MapKitDelegate methods
+- (void)mapView:(MKMapView *)aMapView didAddAnnotationViews:(NSArray *)views {
+    MKAnnotationView *annotationView = [views objectAtIndex:0];
+    id <MKAnnotation> mp = [annotationView annotation];
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([mp coordinate], 250, 250);
+    [aMapView setRegion:region animated:YES];
 }
 
 @end
