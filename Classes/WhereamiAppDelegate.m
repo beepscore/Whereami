@@ -138,7 +138,11 @@ didFailWithError:(NSError *)error
 #pragma mark MapKitDelegate methods
 - (void)mapView:(MKMapView *)aMapView didAddAnnotationViews:(NSArray *)views {
     MKAnnotationView *annotationView = [views objectAtIndex:0];
+    // mp can be any type of object that conforms to the MKAnnotation protocol
     id <MKAnnotation> mp = [annotationView annotation];
+    // MKCoordinateRegion is a structure, it's not a class we can send a message to.
+    // Call C function MKCoordinateRegionMakeWithDistance to make the region.
+    // Ref Hillegass p80.
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([mp coordinate], 250, 250);
     [aMapView setRegion:region animated:YES];
 }
