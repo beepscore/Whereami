@@ -131,9 +131,18 @@
         // This is cached data, you don't want it, keep looking
         return;
     }
+    
+    // format date and time for use in map point annotation subtitle
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];                
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];                
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];    
+    NSString *formattedTime = [dateFormatter stringFromDate:[newLocation timestamp]];
+    [dateFormatter release];
+    
     MapPoint *mp = [[MapPoint alloc]
                     initWithCoordinate:[newLocation coordinate]
-                    title:[locationTitleField text]];
+                    title:[locationTitleField text]
+                    subtitle:formattedTime];
     [mapView addAnnotation:mp];
     [mp release];
     [self foundLocation];
@@ -146,7 +155,7 @@
 
 
 - (void)locationManager:(CLLocationManager *)manager
-didFailWithError:(NSError *)error
+       didFailWithError:(NSError *)error
 {
     NSLog(@"Could not find location: %@", error);
 }

@@ -10,13 +10,18 @@
 
 
 @implementation MapPoint
-@synthesize coordinate, title;
+@synthesize coordinate, title, subtitle;
 
-- (id)initWithCoordinate:(CLLocationCoordinate2D)aCoordinate title:(NSString *)aTitle {
+- (id)initWithCoordinate:(CLLocationCoordinate2D)aCoordinate
+                   title:(NSString *)aTitle
+                subtitle:(NSString *)aSubtitle
+{
     [super init];
-    if (self) {
+    if (self)
+    {
         coordinate = aCoordinate;
         [self setTitle:aTitle];
+        [self setSubtitle:aSubtitle];
     }
     return self;
 }
@@ -26,6 +31,7 @@
 - (void)dealloc
 {
     [title release];
+    [subtitle release];
     [super dealloc];
 }
 
