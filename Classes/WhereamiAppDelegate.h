@@ -23,4 +23,7 @@
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
+- (void)findLocation;
+- (void)foundLocation;
+
 @end

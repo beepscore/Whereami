@@ -7,6 +7,7 @@
 //
 
 #import "WhereamiAppDelegate.h"
+#import "MapPoint.h"
 
 @implementation WhereamiAppDelegate
 
@@ -32,6 +33,7 @@
     // regardless of how much time/power it takes
     [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
     
+    // http://forums.bignerdranch.com/viewtopic.php?f=47&t=521
     // Tell our manager to start looking for its location immediately
     // [locationManager startUpdatingLocation];
     // [locationManager startUpdatingHeading];
@@ -120,6 +122,21 @@
            fromLocation:(CLLocation *)oldLocation
 {
     NSLog(@"%@", newLocation);
+    // How many seconds ago was this new location created?
+    NSTimeInterval t = [[newLocation timestamp] timeIntervalSinceNow];
+    // CLLocationManagers will return the last found location of the
+    // device first, you don't want that data in this case.
+    // I f this location was made more than 3 minutes ago, ignore it.
+    if (t < -180) {
+        // This is cached data, you don't want it, keep looking
+        return;
+    }
+    MapPoint *mp = [[MapPoint alloc]
+                    initWithCoordinate:[newLocation coordinate]
+                    title:[locationTitleField text]];
+    [mapView addAnnotation:mp];
+    [mp release];
+    [self foundLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager 
@@ -135,6 +152,7 @@ didFailWithError:(NSError *)error
 }
 
 
+#pragma mark -
 #pragma mark MapKitDelegate methods
 - (void)mapView:(MKMapView *)aMapView didAddAnnotationViews:(NSArray *)views {
     MKAnnotationView *annotationView = [views objectAtIndex:0];
@@ -145,6 +163,32 @@ didFailWithError:(NSError *)error
     // Ref Hillegass p80.
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([mp coordinate], 250, 250);
     [aMapView setRegion:region animated:YES];
+}
+
+#pragma mark -
+#pragma mark text field delegate methods
+- (BOOL)textFieldShouldReturn:(UITextField *)aTextField {
+    // called when 'return' key pressed. return NO to ignore.
+    [self findLocation];
+    [aTextField resignFirstResponder];
+    return YES;
+}
+
+
+- (void)findLocation
+{
+    [locationManager startUpdatingLocation];
+    [activityIndicator startAnimating];
+    [locationTitleField setHidden:YES];
+}
+
+
+- (void)foundLocation
+{
+    [locationTitleField setText:@""];    
+    [activityIndicator stopAnimating];
+    [locationTitleField setHidden:NO];    
+    [locationManager stopUpdatingLocation];
 }
 
 @end
