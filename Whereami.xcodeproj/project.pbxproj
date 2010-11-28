@@ -17,6 +17,9 @@
 		DE792BA812A1C0FF00326DB9 /* MapPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = DE792BA712A1C0FF00326DB9 /* MapPoint.m */; };
 		DEC5750412853ED70008EA48 /* README in Resources */ = {isa = PBXBuildFile; fileRef = DEC5750312853ED70008EA48 /* README */; };
 		DEC6301D129741A3001FBF29 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEC6301C129741A3001FBF29 /* CoreLocation.framework */; };
+		DEFB08F412A2CB3200AFE532 /* ReadMeUIViewAutoDismiss.md in Resources */ = {isa = PBXBuildFile; fileRef = DEFB08EF12A2CB3200AFE532 /* ReadMeUIViewAutoDismiss.md */; };
+		DEFB08F512A2CB3200AFE532 /* UIActionSheetAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFB08F112A2CB3200AFE532 /* UIActionSheetAutoDismiss.m */; };
+		DEFB08F612A2CB3200AFE532 /* UIAlertViewAutoDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = DEFB08F312A2CB3200AFE532 /* UIAlertViewAutoDismiss.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +38,11 @@
 		DE792BA712A1C0FF00326DB9 /* MapPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapPoint.m; sourceTree = "<group>"; };
 		DEC5750312853ED70008EA48 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		DEC6301C129741A3001FBF29 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		DEFB08EF12A2CB3200AFE532 /* ReadMeUIViewAutoDismiss.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReadMeUIViewAutoDismiss.md; sourceTree = "<group>"; };
+		DEFB08F012A2CB3200AFE532 /* UIActionSheetAutoDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIActionSheetAutoDismiss.h; sourceTree = "<group>"; };
+		DEFB08F112A2CB3200AFE532 /* UIActionSheetAutoDismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIActionSheetAutoDismiss.m; sourceTree = "<group>"; };
+		DEFB08F212A2CB3200AFE532 /* UIAlertViewAutoDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertViewAutoDismiss.h; sourceTree = "<group>"; };
+		DEFB08F312A2CB3200AFE532 /* UIAlertViewAutoDismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewAutoDismiss.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +85,7 @@
 			children = (
 				DEC5750312853ED70008EA48 /* README */,
 				080E96DDFE201D6D7F000001 /* Classes */,
+				DEFB08EE12A2CB3200AFE532 /* UIViewAutoDismiss */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -113,6 +122,18 @@
 				DEC6301C129741A3001FBF29 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DEFB08EE12A2CB3200AFE532 /* UIViewAutoDismiss */ = {
+			isa = PBXGroup;
+			children = (
+				DEFB08EF12A2CB3200AFE532 /* ReadMeUIViewAutoDismiss.md */,
+				DEFB08F012A2CB3200AFE532 /* UIActionSheetAutoDismiss.h */,
+				DEFB08F112A2CB3200AFE532 /* UIActionSheetAutoDismiss.m */,
+				DEFB08F212A2CB3200AFE532 /* UIAlertViewAutoDismiss.h */,
+				DEFB08F312A2CB3200AFE532 /* UIAlertViewAutoDismiss.m */,
+			);
+			path = UIViewAutoDismiss;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,6 +190,7 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				DEC5750412853ED70008EA48 /* README in Resources */,
+				DEFB08F412A2CB3200AFE532 /* ReadMeUIViewAutoDismiss.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,6 +204,8 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* WhereamiAppDelegate.m in Sources */,
 				DE792BA812A1C0FF00326DB9 /* MapPoint.m in Sources */,
+				DEFB08F512A2CB3200AFE532 /* UIActionSheetAutoDismiss.m in Sources */,
+				DEFB08F612A2CB3200AFE532 /* UIAlertViewAutoDismiss.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

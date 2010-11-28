@@ -8,6 +8,7 @@
 
 #import "WhereamiAppDelegate.h"
 #import "MapPoint.h"
+#import "UIAlertViewAutoDismiss.h"
 
 @interface WhereamiAppDelegate ()
 - (void)annotateWithMapPointForLocation:(CLLocation *)aLocation;
@@ -143,7 +144,7 @@
     
     // annotate map with title and date according to book Ch 5 challenge #1
     //[self annotateWithMapPointForLocation:newLocation];
-
+    
     // annotate map with placemark according to book Ch 5 challenge #2
     [self annotateWithPlacemarkForCoordinate:[newLocation coordinate]];
     
@@ -226,7 +227,7 @@
 - (void)annotateWithPlacemarkForCoordinate:(CLLocationCoordinate2D)aCoordinate
 {
     reverseGeocoder = [[MKReverseGeocoder alloc]
-                                          initWithCoordinate:aCoordinate];
+                       initWithCoordinate:aCoordinate];
     [reverseGeocoder setDelegate:self];
     // start asychronous
     [reverseGeocoder start];
@@ -247,7 +248,18 @@
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder 
        didFailWithError:(NSError *)error
 {
-    NSLog(@"Could not find placemark: %@", error);
+    NSString *errorMessage = [[NSString alloc] initWithFormat:@"%@", error];    
+    
+    UIAlertViewAutoDismiss *alertView = [[UIAlertViewAutoDismiss alloc] 
+                                         initWithTitle:@"Sorry, Could Not Find Placemark"
+                                         message:errorMessage
+                                         delegate: nil
+                                         cancelButtonTitle:@"OK" 
+                                         otherButtonTitles:nil];    
+    [errorMessage release];
+    [alertView show];
+    [alertView release];
+    
     [self cleanupReverseGeocoder];
 }
 
