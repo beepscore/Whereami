@@ -11,10 +11,14 @@
 #import <MapKit/MapKit.h>
 
 @interface WhereamiAppDelegate : NSObject 
-<UIApplicationDelegate, CLLocationManagerDelegate, MKMapViewDelegate> 
+<UIApplicationDelegate, CLLocationManagerDelegate, MKMapViewDelegate, MKReverseGeocoderDelegate> 
 {
     UIWindow *window;
     CLLocationManager *locationManager;
+    
+    // reverseGeocoder runs asyncrhounously, we need to keep a reference
+    // so when it calls back with success we can release it
+    MKReverseGeocoder *reverseGeocoder;
     
     IBOutlet MKMapView *mapView;
     IBOutlet UIActivityIndicatorView *activityIndicator;

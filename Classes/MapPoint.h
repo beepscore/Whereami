@@ -22,7 +22,6 @@
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *subtitle;
 
-// Called as a result of dragging an annotation view.
 - (id)initWithCoordinate:(CLLocationCoordinate2D)aCoordinate
                    title:(NSString *)aTitle
                 subtitle:(NSString *)aSubtitle;

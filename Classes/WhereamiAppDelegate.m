@@ -9,6 +9,13 @@
 #import "WhereamiAppDelegate.h"
 #import "MapPoint.h"
 
+@interface WhereamiAppDelegate ()
+- (void)annotateWithMapPointForLocation:(CLLocation *)aLocation;
+- (void)annotateWithPlacemarkForCoordinate:(CLLocationCoordinate2D)aCoordinate;
+- (void)cleanupReverseGeocoder;
+@end
+
+
 @implementation WhereamiAppDelegate
 
 @synthesize window;
@@ -109,6 +116,7 @@
     // so the delegator won't have a bad reference.
     // In this app it won't matter, because when WhereamiAppDelegate goes away the app is ending.
     [locationManager setDelegate:nil];
+    [reverseGeocoder setDelegate:nil];
     
     [window release];
     [super dealloc];
@@ -126,26 +134,38 @@
     NSTimeInterval t = [[newLocation timestamp] timeIntervalSinceNow];
     // CLLocationManagers will return the last found location of the
     // device first, you don't want that data in this case.
-    // I f this location was made more than 3 minutes ago, ignore it.
-    if (t < -180) {
+    // If this location was made more than 3 minutes ago, ignore it.
+    if (t < -180)
+    {
         // This is cached data, you don't want it, keep looking
         return;
     }
     
+    // annotate map with title and date according to book Ch 5 challenge #1
+    //[self annotateWithMapPointForLocation:newLocation];
+
+    // annotate map with placemark according to book Ch 5 challenge #2
+    [self annotateWithPlacemarkForCoordinate:[newLocation coordinate]];
+    
+    [self foundLocation];
+}
+
+
+- (void)annotateWithMapPointForLocation:(CLLocation *)aLocation
+{
     // format date and time for use in map point annotation subtitle
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];                
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];                
     [dateFormatter setDateStyle:NSDateFormatterShortStyle];    
-    NSString *formattedTime = [dateFormatter stringFromDate:[newLocation timestamp]];
+    NSString *formattedTime = [dateFormatter stringFromDate:[aLocation timestamp]];
     [dateFormatter release];
     
     MapPoint *mp = [[MapPoint alloc]
-                    initWithCoordinate:[newLocation coordinate]
+                    initWithCoordinate:[aLocation coordinate]
                     title:[locationTitleField text]
                     subtitle:formattedTime];
     [mapView addAnnotation:mp];
-    [mp release];
-    [self foundLocation];
+    [mp release]; 
 }
 
 - (void)locationManager:(CLLocationManager *)manager 
@@ -198,6 +218,46 @@
     [activityIndicator stopAnimating];
     [locationTitleField setHidden:NO];    
     [locationManager stopUpdatingLocation];
+}
+
+
+#pragma mark -
+#pragma mark MKReverseGeocoder
+- (void)annotateWithPlacemarkForCoordinate:(CLLocationCoordinate2D)aCoordinate
+{
+    reverseGeocoder = [[MKReverseGeocoder alloc]
+                                          initWithCoordinate:aCoordinate];
+    [reverseGeocoder setDelegate:self];
+    // start asychronous
+    [reverseGeocoder start];
+}
+
+
+#pragma mark -
+#pragma mark MKReverseGeocoder delegate methods
+- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder 
+       didFindPlacemark:(MKPlacemark *)placemark
+{
+    // a MKPlacemark conforms to MKAnnotation, so we can add a placemark directly to the map
+    [mapView addAnnotation:placemark];
+    [self cleanupReverseGeocoder];
+}
+
+
+- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder 
+       didFailWithError:(NSError *)error
+{
+    NSLog(@"Could not find placemark: %@", error);
+    [self cleanupReverseGeocoder];
+}
+
+
+- (void)cleanupReverseGeocoder
+{
+    [reverseGeocoder cancel];
+    [reverseGeocoder setDelegate:nil];
+    [reverseGeocoder release];
+    reverseGeocoder = nil;
 }
 
 @end

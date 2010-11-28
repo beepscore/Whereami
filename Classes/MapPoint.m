@@ -8,7 +8,6 @@
 
 #import "MapPoint.h"
 
-
 @implementation MapPoint
 @synthesize coordinate, title, subtitle;
 
@@ -26,6 +25,7 @@
     return self;
 }
 
+
 #pragma mark -
 #pragma mark Memory management
 - (void)dealloc
@@ -34,6 +34,5 @@
     [subtitle release];
     [super dealloc];
 }
-
 
 @end
